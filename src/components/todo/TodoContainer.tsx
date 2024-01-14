@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/redux/hook";
-import { Button } from "../ui/button";
 import AddTodo from "./AddTodo";
+import FilterTodo from "./FilterTodo";
 import TodoCard from "./TodoCard";
 
 const TodoContainer = () => {
@@ -10,7 +10,7 @@ const TodoContainer = () => {
     <div>
       <div className="flex justify-between">
         <AddTodo />
-        <Button>Filter</Button>
+        <FilterTodo />
       </div>
       <div className="bg-blue-800 p-3 rounded-lg mt-5">
         <div className="border p-1 rounded bg-white space-y-2">
