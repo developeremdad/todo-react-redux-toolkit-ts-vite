@@ -14,11 +14,21 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const AddTodo = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("");
   const dispatch = useAppDispatch();
+  console.log({ priority });
 
   const id = Math.random().toString(32).substring(2, 10);
 
@@ -29,6 +39,7 @@ const AddTodo = () => {
         id,
         title,
         description,
+        priority,
       })
     );
   };
@@ -69,6 +80,25 @@ const AddTodo = () => {
                   placeholder="Enter description"
                   className="col-span-3"
                 />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="priority" className="text-right">
+                  Priority
+                </Label>
+                <div className="col-span-3">
+                  <Select onValueChange={(value: string) => setPriority(value)}>
+                    <SelectTrigger className="w-full" id="priority">
+                      <SelectValue placeholder="Select a priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="hight">Hight</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="low">Low</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
             <DialogFooter>

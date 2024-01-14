@@ -5,6 +5,7 @@ export type TTodo = {
   title: string;
   description: string;
   isCompleted?: boolean;
+  priority: string;
 };
 
 type TInitialState = {
@@ -20,16 +21,17 @@ export const todosSlice = createSlice({
   initialState: initialState,
   reducers: {
     addTodo: (state, action: PayloadAction<TTodo>) => {
+      console.log(action.payload);
       // state.todos.push(action.payload);   // two way we can set payload.
       state.todos.push({ ...action.payload, isCompleted: false });
     },
     removeTodo: (state, action: PayloadAction<string>) => {
       state.todos = state.todos.filter((item) => item.id !== action.payload);
     },
-    completedTodo: (state, action: PayloadAction<string>) =>{
-      const todo = state.todos.find(item => item.id === action.payload)
-      todo!.isCompleted = !todo?.isCompleted
-    }
+    completedTodo: (state, action: PayloadAction<string>) => {
+      const todo = state.todos.find((item) => item.id === action.payload);
+      todo!.isCompleted = !todo?.isCompleted;
+    },
   },
 });
 

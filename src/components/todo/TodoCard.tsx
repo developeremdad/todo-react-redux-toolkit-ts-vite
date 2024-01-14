@@ -6,7 +6,7 @@ import {
 import { useAppDispatch } from "@/redux/hook";
 import { Button } from "../ui/button";
 
-const TodoCard = ({ id, title, description, isCompleted }: TTodo) => {
+const TodoCard = ({ id, title, description, isCompleted, priority }: TTodo) => {
   const dispatch = useAppDispatch();
   return (
     <div>
@@ -19,7 +19,14 @@ const TodoCard = ({ id, title, description, isCompleted }: TTodo) => {
             id="complete"
           />
           <p>{title}</p>
-          <div>{isCompleted ? <p className="text-green-500">Done</p> : <p className="text-red-500">Pending</p>}</div>
+          <p className="capitalize">{priority}</p>
+          <div>
+            {isCompleted ? (
+              <p className="text-green-500">Done</p>
+            ) : (
+              <p className="text-red-500">Pending</p>
+            )}
+          </div>
           <p>{description}</p>
           <div className="space-x-3">
             <Button

@@ -18,6 +18,7 @@ const TodoContainer = () => {
             <div className="flex justify-between items-center p-3">
               <div>#</div>
               <p>Title</p>
+              <div>Priority</div>
               <div>Status</div>
               <p>Description</p>
               <div className="space-x-3">Action</div>
