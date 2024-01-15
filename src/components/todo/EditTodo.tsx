@@ -1,4 +1,7 @@
-import { useAddTodoMutation } from "@/redux/api/api";
+import {
+  useGetSingleTodoQuery,
+  useToggleTaskCompleteMutation,
+} from "@/redux/api/api";
 import { FormEvent, useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -22,29 +25,49 @@ import {
   SelectValue,
 } from "../ui/select";
 
-const AddTodo = () => {
+const EditTodo = ({ editId }: { editId: string }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
 
-  // after server api connection
-  const [addTodo, { data, isLoading }] = useAddTodoMutation();
-  console.log(data, isLoading);
+  const { data: todo } = useGetSingleTodoQuery(editId);
+
+  // After server api connection
+  const [toggleTaskComplete] = useToggleTaskCompleteMutation();
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    addTodo({
-      title,
-      description,
-      priority,
-      isCompleted: false,
-    });
+    const todoInfo = {
+      id: editId,
+      data: {
+        title: title || todo.title,
+        description: description || todo.description,
+        isCompleted: todo.isCompleted,
+        priority: priority || todo.priority,
+      },
+    };
+    toggleTaskComplete(todoInfo);
   };
 
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button>Add todo</Button>
+          <Button className="bg-green-600">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+              />
+            </svg>
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <form onSubmit={handleSubmit}>
@@ -60,6 +83,7 @@ const AddTodo = () => {
                   Title
                 </Label>
                 <Input
+                  defaultValue={todo?.title}
                   onChange={(e) => setTitle(e.target.value)}
                   id="title"
                   placeholder="Enter title"
@@ -71,6 +95,7 @@ const AddTodo = () => {
                   Description
                 </Label>
                 <Input
+                  defaultValue={todo?.description}
                   onChange={(e) => setDescription(e.target.value)}
                   id="description"
                   placeholder="Enter description"
@@ -82,7 +107,10 @@ const AddTodo = () => {
                   Priority
                 </Label>
                 <div className="col-span-3">
-                  <Select onValueChange={(value: string) => setPriority(value)}>
+                  <Select
+                    defaultValue={todo?.priority}
+                    onValueChange={(value: string) => setPriority(value)}
+                  >
                     <SelectTrigger className="w-full" id="priority">
                       <SelectValue placeholder="Select a priority" />
                     </SelectTrigger>
@@ -109,4 +137,4 @@ const AddTodo = () => {
   );
 };
 
-export default AddTodo;
+export default EditTodo;
